@@ -39,8 +39,8 @@ This system helps reduce delays, ensures accountability, and provides transparen
 
 ---
 
-## 🌍 **Live Demo (If Deployed)**  
-🔗 [(https://campusfix.onrender.com)](#) *(Update with actual link if deployed)*  
+## 🌍 **Live Demo **  
+🔗 https://campusfix.onrender.com*  
 
 ---
 
