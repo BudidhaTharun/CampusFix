@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './History.css';
+import config from '../config';
 
 function History() {
   const [requests, setRequests] = useState([]);
@@ -8,7 +9,7 @@ function History() {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/request/student-history', {
+        const response = await fetch(`${config}/api/request/student-history`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

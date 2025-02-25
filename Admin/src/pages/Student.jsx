@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Student.css';
 import History from './History';
+import config from '../config';
 
 const Student = () => {
   const token = localStorage.getItem('token') || 'SampleBearerToken';
@@ -26,7 +27,7 @@ const Student = () => {
     };
   
     try {
-      const response = await fetch('http://localhost:5000/api/request/', {
+      const response = await fetch(`${config}/api/request/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

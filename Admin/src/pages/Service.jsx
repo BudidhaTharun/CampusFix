@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Service.css';
+import config from '../config';
 
 const Service = () => {
   const token = localStorage.getItem('token') || 'SampleBearerToken';
@@ -12,7 +13,7 @@ const Service = () => {
   // Fetch pending requests (for the service person, e.g., Electrician)
   const fetchPendingRequests = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/request/', {
+      const response = await fetch(`${config}/api/request/`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -32,7 +33,7 @@ const Service = () => {
   // Fetch service history (requests accepted by the service person)
   const fetchHistoryRequests = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/request/history', {
+      const response = await fetch(`${config}/api/request/history`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -57,7 +58,7 @@ const Service = () => {
   // Handle Accept: Service person accepts a request
   const handleAccept = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/request/${id}/accept`, {
+      const response = await fetch(`${config}/api/request/${id}/accept`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -81,7 +82,7 @@ const Service = () => {
   // Handle Mark as Successful: Service person marks a processing request as successful
   const handleMarkSuccessful = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/request/${id}/success`, {
+      const response = await fetch(`${config}/api/request/${id}/success`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

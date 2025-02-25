@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import './Home.css';
 import LandingImage from '../assets/h2.png';
 import c6 from '../assets/c6.png';
+import config from '../config';
 
 const HomePage = (props) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -30,8 +31,8 @@ const HomePage = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const url = isLogin
-      ? 'http://localhost:5000/api/auth/login'
-      : 'http://localhost:5000/api/auth/register';
+      ? `${config}/api/auth/login`
+      : `${config}/api/auth/register`;
 
     const requestData = {
       email,
