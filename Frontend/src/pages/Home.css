@@ -188,7 +188,7 @@
   
   /* Features Section */
   .features {
-    padding: 6rem 6%;
+    padding: 8rem 6%;
   }
   
   .features h2 {
@@ -222,7 +222,7 @@
   
   /* Services Section */
   .maintenance {
-    padding: 6rem 6%;
+    padding: 8rem 6%;
     background: var(--light);
   }
   
@@ -603,4 +603,8 @@
       width: 100%;
       max-width: 200px;
     }
+  }
+   
+  #login{
+    padding:4rem 6%;
   }
