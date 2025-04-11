@@ -1,115 +1,169 @@
-import React from 'react';
-import { Wrench, Zap, Scissors } from 'lucide-react';
 
-export default function Services() {
-  const styles = {
-    page: {
-      background: '#F9FAFB',
-      color: '#1F2937',
-      padding: '4rem',
-      minHeight: '100vh',
-      textAlign: 'center',
-      fontFamily: 'Inter, sans-serif',
-      boxSizing: 'border-box',
-    },
-    title: {
-      fontSize: '2.5rem',
-      marginBottom: '0.5rem',
-      background: 'linear-gradient(135deg, #7678f6 0%, #d9a7c7 100%)',
-      WebkitBackgroundClip: 'text',
-      WebkitTextFillColor: 'transparent',
-    },
-    subtitle: {
-      fontSize: '1rem',
-      marginBottom: '2rem',
-      opacity: 0.8,
-      maxWidth: '600px',
-      margin: '0 auto 2rem',
-    },
-    list: {
-      display: 'flex',
-      justifyContent: 'center',
-      flexWrap: 'wrap',
-      gap: '2rem',
-      marginTop: '2rem',
-    },
-    card: {
-      background: '#ffffff',
-      borderRadius: '1rem',
-      padding: '2rem',
-      width: '250px',
-      boxShadow: '0 8px 20px rgba(0,0,0,0.05)',
-      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-      cursor: 'pointer',
-    },
-    cardHover: {
-      transform: 'translateY(-5px)',
-      boxShadow: '0 12px 24px rgba(0,0,0,0.1)',
-    },
-    cardIcon: {
-      color: '#10B981',
-    },
-    cardTitle: {
-      margin: '1rem 0 0.5rem',
-      fontSize: '1.25rem',
-    },
-    cardText: {
-      fontSize: '0.9rem',
-      opacity: 0.8,
-      lineHeight: 1.4,
-    },
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './Service.css';
+import config from '../config';
+
+const Services = () => {
+  const token = localStorage.getItem('token') || 'SampleBearerToken';
+  const [pendingRequests, setPendingRequests] = useState([]);
+  const [historyRequests, setHistoryRequests] = useState([]);
+  const navigate = useNavigate();
+
+  // Fetch pending requests (for the service person, e.g., Electrician)
+  const fetchPendingRequests = async () => {
+    try {
+      const response = await fetch(`${config}/api/request/`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch pending requests');
+      }
+      const data = await response.json();
+      // Assuming the endpoint returns an array of pending requests
+      setPendingRequests(data);
+    } catch (error) {
+      console.error('Error fetching pending requests:', error.message);
+    }
   };
 
-  // simple hover effect state
-  const [hovered, setHovered] = React.useState(null);
+  // Fetch service history (requests accepted by the service person)
+  const fetchHistoryRequests = async () => {
+    try {
+      const response = await fetch(`${config}/api/request/history`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch request history');
+      }
+      const data = await response.json();
+      setHistoryRequests(data);
+    } catch (error) {
+      console.error('Error fetching history:', error.message);
+    }
+  };
 
-  const services = [
-    {
-      Icon: Wrench,
-      title: 'Plumbing',
-      desc: 'Emergency pipe repairs, leak fixes, and drainage solutions.',
-    },
-    {
-      Icon: Zap,
-      title: 'Electrical',
-      desc:
-        'Fast response for wiring issues, power outages, and appliance repairs.',
-    },
-    {
-      Icon: Scissors,
-      title: 'Carpentry',
-      desc:
-        'Furniture repairs, door/window fixes, and custom installations.',
-    },
-  ];
+  // Fetch data on component mount
+  useEffect(() => {
+    fetchPendingRequests();
+    fetchHistoryRequests();
+  }, [token]);
+
+  // Handle Accept: Service person accepts a request
+  const handleAccept = async (id) => {
+    try {
+      const response = await fetch(`${config}/api/request/${id}/accept`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Failed to accept request');
+      }
+      alert('Request accepted successfully!');
+      // Refresh both lists after accepting
+      fetchPendingRequests();
+      fetchHistoryRequests();
+    } catch (error) {
+      console.error('Error accepting request:', error.message);
+      alert(`Error: ${error.message}`);
+    }
+  };
+
+  // Handle Mark as Successful: Service person marks a processing request as successful
+  const handleMarkSuccessful = async (id) => {
+    try {
+      const response = await fetch(`${config}/api/request/${id}/success`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Failed to mark request as successful');
+      }
+      alert('Request marked as successful!');
+      // Refresh history list
+      fetchHistoryRequests();
+    } catch (error) {
+      console.error('Error marking request as successful:', error.message);
+      alert(`Error: ${error.message}`);
+    }
+  };
+
+  // Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    // navigate('/'); // Redirect to Homepage (login)
+    window.location.href='/';
+  };
 
   return (
-    <div style={styles.page}>
-      <h1 style={styles.title}>Our Services</h1>
-      <p style={styles.subtitle}>
-        We keep your campus running smoothly with expert maintenance and
-        support.
-      </p>
-      <div style={styles.list}>
-        {services.map((svc, idx) => {
-          const isHovered = hovered === idx;
-          return (
-            <div
-              key={idx}
-              style={{
-                ...styles.card,
-                ...(isHovered ? styles.cardHover : {}),
-              }}
-              onMouseEnter={() => setHovered(idx)}
-              onMouseLeave={() => setHovered(null)}
-            >
-              <svc.Icon size={48} style={styles.cardIcon} />
-              <h2 style={styles.cardTitle}>{svc.title}</h2>
-              <p style={styles.cardText}>{svc.desc}</p>
-            </div>
-          );
-        })}
+    <div className="service-page">
+      <header className="service-header">
+        <h1>Service Dashboard</h1>
+        <button className="logout-btn" onClick={handleLogout}>Logout</button>
+      </header>
+      <div className="content-section">
+        <div className="pending-section">
+          <h2 className="section-title">Pending Requests</h2>
+          {pendingRequests.length === 0 ? (
+            <p className="no-data">No pending requests.</p>
+          ) : (
+            <ul className="pending-list">
+              {pendingRequests.map((req) => (
+                <li key={req._id} className="pending-item">
+                  <p><strong>Room:</strong> {req.roomNumber}</p>
+                  <p><strong>Problem:</strong> {req.description}</p>
+                  <p><strong>Service:</strong> {req.serviceType}</p>
+                  <button className="action-btn" onClick={() => handleAccept(req._id)}>
+                    Accept
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div className="history-section">
+          <h2 className="section-title">Request History</h2>
+          {historyRequests.length === 0 ? (
+            <p className="no-data">No history available.</p>
+          ) : (
+            <ul className="history-list">
+              {historyRequests.map((req) => (
+                <li key={req._id} className="history-item">
+                  <p><strong>Room:</strong> {req.roomNumber}</p>
+                  <p><strong>Problem:</strong> {req.description}</p>
+                  <p>
+                    <strong>Status:</strong>{' '}
+                    <span className={`status ${req.status.toLowerCase()}`}>
+                      {req.status}
+                    </span>
+                  </p>
+                  {req.status === 'Processing' && (
+                    <button className="action-btn" onClick={() => handleMarkSuccessful(req._id)}>
+                      Mark as Successful
+                    </button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default Services;
