@@ -45,7 +45,7 @@ function Home() {
         <nav className={`nav-menu ${menuOpen ? 'active' : ''}`}>
           <ul>
             <li>
-              <a href="#" onClick={() => setMenuOpen(false)}>
+              <a href="#hero" onClick={() => setMenuOpen(false)}>
                 Home
               </a>
             </li>
@@ -92,7 +92,7 @@ function Home() {
         </div>
       </header>
 
-      <section className="hero">
+      <section className="hero" id='hero'>
         <div className="hero-content">
           <h1>Redefining Campus Life Through Technology</h1>
           <p>

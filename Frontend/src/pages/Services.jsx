@@ -23,14 +23,12 @@ const Services = () => {
         throw new Error('Failed to fetch pending requests');
       }
       const data = await response.json();
-      // Assuming the endpoint returns an array of pending requests
       setPendingRequests(data);
     } catch (error) {
       console.error('Error fetching pending requests:', error.message);
     }
   };
 
-  // Fetch service history (requests accepted by the service person)
   const fetchHistoryRequests = async () => {
     try {
       const response = await fetch(`${config}/api/request/history`, {
@@ -110,14 +108,38 @@ const Services = () => {
   };
 
   return (
-    <div className="service-page">
+    <div className="service-page" style={{}}>
       <header className="service-header">
-        <h1>Service Dashboard</h1>
-        <button className="logout-btn" onClick={handleLogout}>Logout</button>
+      <div
+          className="logo"
+          style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+        >
+          <img
+            src="https://thumbs.dreamstime.com/b/electrician-has-screwdriver-his-hand-89764045.jpg?w=768"
+            alt="logo"
+            style={{
+              width: '100px',
+              height: '80px',
+              borderRadius: '50%',
+              objectFit: 'cover',
+            }}
+          />
+          <span
+            style={{
+              fontSize: '2.5rem',
+              fontWeight: 'bold',
+              fontFamily: "'Vollkorn', serif",
+            }}
+            className='head-name'
+          >
+            CampusFix
+          </span>
+        </div>
+        <button className="logout-btn btn-primary" onClick={handleLogout}>Logout</button>
       </header>
       <div className="content-section">
         <div className="pending-section">
-          <h2 className="section-title">Pending Requests</h2>
+          <h2 className="section-title" style={{color:"#b20a2c"}}>Pending Requests</h2>
           {pendingRequests.length === 0 ? (
             <p className="no-data">No pending requests.</p>
           ) : (
@@ -136,7 +158,7 @@ const Services = () => {
           )}
         </div>
         <div className="history-section">
-          <h2 className="section-title">Request History</h2>
+          <h2 className="section-title "  style={{color:"#b20a2c" ,fontWeight:"Bold"}}>Request History</h2>
           {historyRequests.length === 0 ? (
             <p className="no-data">No history available.</p>
           ) : (
