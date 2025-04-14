@@ -1,0 +1,210 @@
+/* === Page Styling === */
+.student-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to bottom right, #e0f7fa, #f1f8e9);
+  color: #333;
+}
+
+/* === Header === */
+.student-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  background: linear-gradient(to right, #2196f3, #21cbf3);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.logo img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+/* === Primary Button === */
+.primary-button {
+  background: linear-gradient(to right, #ff6b6b, #ff4757);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.primary-button:hover {
+  background: linear-gradient(to right, #e84141, #ff2e2e);
+}
+
+/* === Content === */
+.student-content {
+  display: flex;
+  flex: 1;
+  gap: 20px;
+  padding: 20px;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+/* === Section Containers === */
+.form-section,
+.history-section {
+  flex: 1 1 450px;
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(to bottom, #ffffff, #f9f9f9);
+}
+
+.section-title {
+  font-size: 1.6rem;
+  text-align: center;
+  color: #283845;
+  margin-bottom: 20px;
+}
+
+/* === Form Styling === */
+.request-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+input,
+textarea,
+select {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #fff;
+  box-sizing: border-box;
+  resize: none;
+}
+
+.submit-btn {
+  background: linear-gradient(to right, #4facfe, #00f2fe);
+  color: white;
+  font-size: 1rem;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+}
+
+/* === History Section === */
+.history-container {
+  background-color: #f0f4f8;
+  border-radius: 12px;
+  padding: 10px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.history-container::-webkit-scrollbar {
+  display: none;
+}
+
+.request-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.request-item {
+  background: white;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.request-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.request-header {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.request-body p {
+  margin: 4px 0;
+  color: #555;
+}
+
+.status {
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.status.pending {
+  background-color: #ffecb3;
+  color: #ff9800;
+}
+
+.status.processing {
+  background-color: #c5e1f9;
+  color: #2196f3;
+}
+
+.status.successful {
+  background-color: #d0f0c0;
+  color: #2e7d32;
+}
+
+.no-requests {
+  text-align: center;
+  color: #888;
+  margin-top: 20px;
+  font-size: 1rem;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .student-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .student-content {
+    flex-direction: column;
+  }
+}

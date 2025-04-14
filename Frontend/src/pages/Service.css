@@ -291,7 +291,11 @@ html, body, #root {
     .pending-section,
     .history-section {
       width: 100%;
+      min-height:50vh;
     }
+    /* .pending-section{
+      min-height:50vh;
+    } */
   
     .section-title {
       font-size: 1.4rem;
