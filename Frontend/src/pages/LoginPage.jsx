@@ -54,8 +54,15 @@ const LoginPage = () => {
           localStorage.setItem('token', data.token);
           localStorage.setItem('role', data.role);
           setTimeout(() => {
-            navigate('/services');
-          }, 2000);
+  if (roll === 'Student') {
+    // Navigate to the student page
+    navigate('/student', { replace: true });
+  } else {
+    // Navigate to the services page if the role is not Student
+    navigate('/services', { replace: true });
+  }
+}, 2000);
+
         } else {
           toast.success("Signup Successful! Please login now.", {
             position: "top-right",
