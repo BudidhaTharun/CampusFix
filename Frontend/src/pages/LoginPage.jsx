@@ -54,7 +54,7 @@ const LoginPage = () => {
           localStorage.setItem('token', data.token);
           localStorage.setItem('role', data.role);
           setTimeout(() => {
-  if (roll === 'Student') {
+  if (data.role === 'Student') {
     // Navigate to the student page
     navigate('/student', { replace: true });
   } else {
