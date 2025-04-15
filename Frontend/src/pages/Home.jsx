@@ -44,38 +44,89 @@ function Home() {
 
         <nav className={`nav-menu ${menuOpen ? 'active' : ''}`}>
           <ul>
+
+                    <li>
+  <a
+    href="#hero"
+    onClick={(e) => {
+      e.preventDefault();          
+      setMenuOpen(false);  
+      document
+        .getElementById('hero')
+        .scrollIntoView({ behavior: 'smooth' });
+    }}
+  >
+    Home
+  </a>
+</li>
+
             <li>
-              <a href="#hero" onClick={() => setMenuOpen(false)}>
-                Home
-              </a>
-            </li>
-            <li>
-              <a href="#features" onClick={() => setMenuOpen(false)}>
+              <a href="#features"  onClick={(e) => {
+      e.preventDefault();          
+      setMenuOpen(false);  
+      document
+        .getElementById('features')
+        .scrollIntoView({ behavior: 'smooth' });
+    }}>
                 Features
               </a>
             </li>
             <li>
-              <a href="#services" onClick={() => setMenuOpen(false)}>
+              <a href="#services"  onClick={(e) => {
+      e.preventDefault();          
+      setMenuOpen(false);  
+      document
+        .getElementById('services')
+        .scrollIntoView({ behavior: 'smooth' });
+    }}>
                 Services
               </a>
             </li>
             <li>
-              <a href="#about" onClick={() => setMenuOpen(false)}>
+              <a href="#about"  onClick={(e) => {
+      e.preventDefault();          
+      setMenuOpen(false);  
+      document
+        .getElementById('about')
+        .scrollIntoView({ behavior: 'smooth' });
+    }}>
                 About
               </a>
             </li>
             <li>
-              <a href="#footer" onClick={() => setMenuOpen(false)}>
+              <a href="#footer"  onClick={(e) => {
+      e.preventDefault();          
+      setMenuOpen(false);  
+      document
+        .getElementById('footer')
+        .scrollIntoView({ behavior: 'smooth' });
+    }}>
                 Contact
               </a>
             </li>
+            {menuOpen && (
+            <li className="mobile-only login-item">
+               <a
+                  href="#login"
+                 onClick={() => setMenuOpen(false)}
+              >
+                 <LogIn size={18} />
+                 <span>Login</span>
+               </a>
+              </li>
+            )}
+ 
+            
+          </ul>
+          {
+            !menuOpen?
             <li className="mobile-only login-item">
               <button className="login-link" onClick={scrollToLogin}>
                 <LogIn size={18} />
                 <span>Login</span>
               </button>
-            </li>
-          </ul>
+            </li> :''
+            }
         </nav>
 
         <div className="header-buttons">
@@ -87,11 +138,12 @@ function Home() {
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Menu"
           >
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+            {/* {menuOpen ? <X size={24} /> : <Menu size={24} />} */}
+            {menuOpen ? <X size={32} /> : <Menu size={32} />}
           </button>
         </div>
       </header>
-
+       <div className="main-container">
       <section className="hero" id='hero'>
         <div className="hero-content">
           <h1>Redefining Campus Life Through Technology</h1>
@@ -322,6 +374,7 @@ function Home() {
           </p>
         </div>
       </footer>
+      </div>
     </div>
   );
 }

@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
-import { Mail, Lock, User, ArrowRight,  Eye, EyeOff ,UserCog } from 'lucide-react';
+import { Mail, Lock, User, ArrowRight, Eye, EyeOff, UserCog } from 'lucide-react';
 import './LoginPage.css';
 import config from '../config';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState('');
-  const [role, setRole] = useState(''); 
+  const [role, setRole] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [redirect, setRedirect] = useState(false);
   const navigate = useNavigate();
- 
-   const handlechangename =(e)=> setName(e.target.value);
-   const handlechangerole =(e)=> setRole(e.target.value);
-   const handlechangeemail =(e)=> setEmail(e.target.value);
-   const handlechangepassword =(e)=> setPassword(e.target.value);
-   const handlesubmit = async (e) => {
+
+  const handlechangename = (e) => setName(e.target.value);
+  const handlechangerole = (e) => setRole(e.target.value);
+  const handlechangeemail = (e) => setEmail(e.target.value);
+  const handlechangepassword = (e) => setPassword(e.target.value);
+
+  const handlesubmit = async (e) => {
     e.preventDefault();
     const url = isLogin
       ? `${config}/api/auth/login`
@@ -41,20 +43,50 @@ const LoginPage = () => {
 
       if (response.ok) {
         if (isLogin) {
-          alert("Login Successful");
+          toast.success('Login Successful!', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
           localStorage.setItem('token', data.token);
           localStorage.setItem('role', data.role);
-          navigate('/services'); // ✅ Use navigate instead of window.location
+          setTimeout(() => {
+            navigate('/services');
+          }, 2000);
         } else {
-          alert('Signup Successful! Please login now.');
+          toast.success("Signup Successful! Please login now.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
           setIsLogin(true);
         }
       } else {
-        alert(data.message || "Something went wrong");
+        toast.error(data.message || "Something went wrong", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('Failed to connect to the server.');
+      toast.error("Failed to connect to the server.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 
@@ -94,24 +126,35 @@ const LoginPage = () => {
                     <label htmlFor="name">Full Name</label>
                     <div className="input-group">
                       <User size={20} />
-                      <input type="text" id="name" value={name} onChange={handlechangename} placeholder="John Doe" required />
+                      <input
+                        type="text"
+                        id="name"
+                        value={name}
+                        onChange={handlechangename}
+                        placeholder="John Doe"
+                        required
+                      />
                     </div>
                   </div>
 
                   <div className="form-group">
-  <label htmlFor="role">Role</label>
-  <div className="input-group">
-    <UserCog size={20} />
-    <select id="role"  value={role} onChange={handlechangerole}required>
-      <option value="">Select your role</option>
-      <option value="Electrician">Electrician</option>
-      <option value="Plumber">Plumber</option>
-      <option value="Carpenter">Carpenter</option>
-      <option value="Student">Student</option>
-    </select>
-  </div>
-
-</div>
+                    <label htmlFor="role">Role</label>
+                    <div className="input-group">
+                      <UserCog size={20} />
+                      <select
+                        id="role"
+                        value={role}
+                        onChange={handlechangerole}
+                        required
+                      >
+                        <option value="">Select your role</option>
+                        <option value="Electrician">Electrician</option>
+                        <option value="Plumber">Plumber</option>
+                        <option value="Carpenter">Carpenter</option>
+                        <option value="Student">Student</option>
+                      </select>
+                    </div>
+                  </div>
                 </>
               )}
 
@@ -119,30 +162,38 @@ const LoginPage = () => {
                 <label htmlFor="email">Email Address</label>
                 <div className="input-group">
                   <Mail size={20} />
-                  <input type="email" id="email" value={email} onChange={handlechangeemail} placeholder="name@college.edu" required />
+                  <input
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={handlechangeemail}
+                    placeholder="name@college.edu"
+                    required
+                  />
                 </div>
               </div>
 
               <div className="form-group">
-  <label htmlFor="password">Password</label>
-  <div className="input-group">
-  <Lock size={20} />
-    <input
-      type={showPassword ? "text" : "password"}
-      id="password"
-      placeholder="Enter your password"
-      value={password} onChange={handlechangepassword}
-      required
-    />
-    <button
-      type="button"
-      className="toggle-password"
-      onClick={() => setShowPassword(!showPassword)}
-    >
-      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-    </button>
-  </div>
-</div>
+                <label htmlFor="password">Password</label>
+                <div className="input-group">
+                  <Lock size={20} />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={handlechangepassword}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="toggle-password"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
+              </div>
 
               {isLogin && (
                 <div className="form-extra">
@@ -169,6 +220,7 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
