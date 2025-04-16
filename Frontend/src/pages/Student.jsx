@@ -89,9 +89,20 @@ const Student = () => {
 
   // Logout handler
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    toast.success(` LogOut succesful`, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+    setTimeout(() => {
+      localStorage.removeItem('token');
     localStorage.removeItem('role');
     window.location.href = "/";
+    },3000);
+    
   };
 
   // Fetch history
