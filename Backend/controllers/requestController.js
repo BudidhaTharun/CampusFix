@@ -1,7 +1,18 @@
-// controllers/requestController.js
 const Request = require('../models/Request');
+const nodemailer = require('nodemailer');
+const User = require('../models/User');
+require('dotenv').config();
 
-// Create a new service request (Student only)
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  }
+});
+
 const createRequest = async (req, res) => {
   if (req.user.role !== 'Student') {
     return res.status(403).json({ message: 'Only students can create service requests' });
@@ -23,7 +34,6 @@ const createRequest = async (req, res) => {
   }
 };
 
-// Get requests for service person based on their role
 const getServiceRequests = async (req, res) => {
   if (req.user.role === 'Student') {
     return res.status(403).json({ message: 'Students cannot view service requests' });
@@ -37,7 +47,6 @@ const getServiceRequests = async (req, res) => {
   }
 };
 
-// Accept a service request (Service person only)
 const acceptRequest = async (req, res) => {
   if (req.user.role === 'Student') {
     return res.status(403).json({ message: 'Students cannot accept service requests' });
@@ -45,14 +54,8 @@ const acceptRequest = async (req, res) => {
 
   try {
     const request = await Request.findById(req.params.id);
-
-    if (!request) {
-      return res.status(404).json({ message: 'Request not found' });
-    }
-
-    if (request.servicePerson) {
-      return res.status(400).json({ message: 'Request has already been accepted' });
-    }
+    if (!request) return res.status(404).json({ message: 'Request not found' });
+    if (request.servicePerson) return res.status(400).json({ message: 'Request has already been accepted' });
 
     const activeRequest = await Request.findOne({
       servicePerson: req.user._id,
@@ -67,13 +70,25 @@ const acceptRequest = async (req, res) => {
     request.status = 'Processing';
     await request.save();
 
+    const student = await User.findById(request.student);
+
+    if (student?.email) {
+      const acceptMailOptions = {
+        from: 'campusfix.admn@gmail.com',
+        to: student.email,
+        subject: 'Your service request has been accepted',
+        text: `Hello ${student.name},\n\nYour request for "${request.serviceType}" has been accepted by ${req.user.name} on ${new Date().toLocaleString()}.\n\nThey will attend to it soon.\n\nThank you for using our service.`,
+      };
+
+      await transporter.sendMail(acceptMailOptions);
+    }
+
     res.json(request);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Update request status to Successful (Service person only)
 const markAsSuccessful = async (req, res) => {
   if (req.user.role === 'Student') {
     return res.status(403).json({ message: 'Students cannot update request status' });
@@ -81,10 +96,7 @@ const markAsSuccessful = async (req, res) => {
 
   try {
     const request = await Request.findById(req.params.id);
-
-    if (!request) {
-      return res.status(404).json({ message: 'Request not found' });
-    }
+    if (!request) return res.status(404).json({ message: 'Request not found' });
 
     if (request.servicePerson.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: 'You can only update requests you are assigned to' });
@@ -93,35 +105,34 @@ const markAsSuccessful = async (req, res) => {
     request.status = 'Successful';
     await request.save();
 
+    const student = await User.findById(request.student);
+
+    if (student?.email) {
+      const completionMailOptions = {
+        from: 'campusfix.admn@gmail.com',
+        to: student.email,
+        subject: 'Your service request has been completed',
+        text: `Hello ${student.name},\n\nYour request for "${request.serviceType}" has been successfully completed by ${req.user.name} on ${new Date().toLocaleString()}.\n\nThanks for using our service.`,
+      };
+
+      await transporter.sendMail(completionMailOptions);
+    }
+
     res.json(request);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Get request history for service person
 const getRequestHistory = async (req, res) => {
   if (req.user.role === 'Student') {
     return res.status(403).json({ message: 'Students cannot view request history' });
   }
 
   try {
-    const history = await Request.find({ servicePerson: req.user._id });
-    res.json(history);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-// Get request history for students (Student only)
-const getStudentRequestHistory = async (req, res) => {
-  if (req.user.role !== 'Student') {
-    return res.status(403).json({ message: 'Only students can view their request history' });
-  }
-
-  try {
-    const history = await Request.find({ student: req.user._id })
-      .sort({ createdAt: -1 })  // Sort by most recent
-      .select('serviceType description status roomNumber createdAt')  // Select relevant fields
+    const history = await Request.find({ servicePerson: req.user._id })
+      .sort({ createdAt: -1 })  // ✅ Sort by newest first
+      .select('serviceType description status roomNumber student createdAt')
       .exec();
 
     res.status(200).json(history);
@@ -130,6 +141,23 @@ const getStudentRequestHistory = async (req, res) => {
   }
 };
 
+
+const getStudentRequestHistory = async (req, res) => {
+  if (req.user.role !== 'Student') {
+    return res.status(403).json({ message: 'Only students can view their request history' });
+  }
+
+  try {
+    const history = await Request.find({ student: req.user._id })
+      .sort({ createdAt: -1 })
+      .select('serviceType description status roomNumber createdAt')
+      .exec();
+
+    res.status(200).json(history);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 module.exports = {
   createRequest,
