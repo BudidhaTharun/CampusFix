@@ -36,7 +36,15 @@ const Services = () => {
       const data = await response.json();
       setPendingRequests(data);
     } catch (error) {
-      console.error('Error fetching pending requests:', error.message);
+      // console.error('Error fetching pending requests:', error.message);
+      toast.error(' Error fetching pending request', {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 
@@ -53,7 +61,15 @@ const Services = () => {
       const data = await response.json();
       setHistoryRequests(data);
     } catch (error) {
-      console.error('Error fetching history:', error.message);
+      // console.error('Error fetching history:', error.message);
+      toast.error('Error fetching history', {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 
