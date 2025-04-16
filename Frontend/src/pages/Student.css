@@ -205,6 +205,19 @@ select {
   }
 
   .student-content {
+    /* flex-direction: column; */
     flex-direction: column;
+    padding: 10px;
   }
+  .form-section,.history-section{
+    flex: 1 0 auto;
+    width: 100%;
+  }
+
+   .history-section{
+          height:600px;
+   }
+  /* .history-container{
+   margin: bottom 5rem;
+  } */
 }
