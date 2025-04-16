@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Student.css';
 import config from '../config';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Student = () => {
   const token = localStorage.getItem('token') || 'SampleBearerToken';
@@ -28,7 +30,15 @@ const Student = () => {
     e.preventDefault();
 
     if (!roomNumber || !description || !serviceType) {
-      alert('Please fill all fields.');
+      // alert('Please fill all fields.');
+      toast.warn(' Please fill all fields', {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       return;
     }
 
@@ -50,14 +60,30 @@ const Student = () => {
       }
 
       const data = await response.json();
-      alert('Request submitted successfully!');
+      // alert('Request submitted successfully!');
+      toast.success(' Request submitted succesfully', {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       setRoomNumber('');
       setDescription('');
       setServiceType('');
       fetchRequests(); // Refresh history
     } catch (error) {
       console.error('Error submitting request:', error.message);
-      alert(`Error: ${error.message}`);
+      // alert(`Error: ${error.message}`);
+      toast.error(` Error submitting request:${error.message} `, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 
@@ -84,7 +110,15 @@ const Student = () => {
       const data = await response.json();
       setRequests(data.reverse());
     } catch (error) {
-      console.error('Error fetching requests:', error.message);
+      // console.error('Error fetching requests:', error.message);
+      toast.error(` Error fetching  request : ${error.message}`, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 
@@ -142,7 +176,7 @@ const Student = () => {
           </>
         ) : (
           
-          <button className="logout-btn" onClick={handleLogout}>Logout</button>
+          <button className="logout-btn primary-button" onClick={handleLogout}>Logout</button>
         )}
       </header>
 
@@ -188,7 +222,7 @@ const Student = () => {
               </select>
             </div>
 
-            <button type="submit" className="submit-btn">
+            <button type="submit" className="primary-button">
               Submit Request
             </button>
           </form>
@@ -234,7 +268,7 @@ const Student = () => {
         </div>
         )}
       </div>
-
+   <ToastContainer/>
     </div>
   );
 };
