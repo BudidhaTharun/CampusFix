@@ -14,7 +14,7 @@ const Student = () => {
   const [requests, setRequests] = useState([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 700);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('pending');
+  const [activeTab, setActiveTab] = useState('request');
 
   useEffect(() => {
     const handleResize = () => {
