@@ -10,7 +10,19 @@ const Student = () => {
   const [description, setDescription] = useState('');
   const [serviceType, setServiceType] = useState('');
   const [requests, setRequests] = useState([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 700);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('pending');
 
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 700;
+      setIsMobile(mobile);
+      if (!mobile) setIsMenuOpen(false);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   // Submit new service request
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -108,12 +120,35 @@ const Student = () => {
             CampusFix
           </span>
         </div>
-        <button className="logout-btn btn-primary" onClick={handleLogout}>Logout</button>
+        {/* <button className="logout-btn btn-primary" onClick={handleLogout}>Logout</button> */}
+        {isMobile ? (
+          <>
+            <button className="menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              {isMenuOpen ? '✕' : '☰'}
+            </button>
+            {isMenuOpen && (
+              <nav className="mobile-menu">
+                <button className='btn-menu'onClick={() => { setActiveTab('request'); setIsMenuOpen(false); }}>
+                  Make Requests
+                </button>
+                <button className='btn-menu' onClick={() => { setActiveTab('history'); setIsMenuOpen(false); }}>
+                  Request History
+                </button>
+                <button className='btn-menu' onClick={() => { handleLogout(); setIsMenuOpen(false); }}>
+                  Logout
+                </button>
+              </nav>
+            )}
+          </>
+        ) : (
+          
+          <button className="logout-btn" onClick={handleLogout}>Logout</button>
+        )}
       </header>
 
 
       <div className="student-content">
-        {/* Form Section */}
+      {(!isMobile || activeTab === 'request') && (
         <div className="form-section">
           <h2 className="section-title">New Service Request</h2>
           <form onSubmit={handleSubmit} className="request-form">
@@ -157,9 +192,13 @@ const Student = () => {
               Submit Request
             </button>
           </form>
-        </div>
+        </div>  
+      )  }
+      
+      
 
         {/* History Section */}
+        {(!isMobile || activeTab === 'history') && (
         <div className="history-section">
           <h2 className="section-title">Request History</h2>
           <div className="history-container">
@@ -183,9 +222,9 @@ const Student = () => {
                       <p>
                         <strong>Room:</strong> {request.roomNumber}
                       </p>
-                      <p>
+                      {/* <p>
                         <strong>Message:</strong> {request.message || 'No message yet'}
-                      </p>
+                      </p> */}
                     </div>
                   </li>
                 ))}
@@ -193,7 +232,9 @@ const Student = () => {
             )}
           </div>
         </div>
+        )}
       </div>
+
     </div>
   );
 };
