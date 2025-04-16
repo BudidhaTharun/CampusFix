@@ -35,7 +35,7 @@
 
 /* === Primary Button === */
 .primary-button {
-  background: linear-gradient(to right, #ff6b6b, #ff4757);
+  background:linear-gradient(135deg, #7678f6 0%, #d9a7c7 100%);
   color: white;
   border: none;
   padding: 10px 18px;
