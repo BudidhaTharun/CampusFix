@@ -1,5 +1,31 @@
-🏫 CampusFix – Maintenance Management Web App
-CampusFix is a full-stack web application that streamlines the process of reporting and resolving maintenance issues within a campus. Built with modern technologies, it enables students to easily log issues and service staff to manage them efficiently.
+# 🏫 CampusFix  
+### Effortless Maintenance Requests for Students & Service Staff
+
+CampusFix is a web-based platform that streamlines campus maintenance by enabling students to easily report issues and allowing service staff to efficiently manage and resolve them.
+
+---
+
+## ⚙️ Tech Stack
+
+### 🖥️ Frontend
+- React (Vite)
+
+### 🔧 Backend
+- Node.js
+- Express.js
+- MongoDB (Mongoose)
+- JWT (Authentication)
+- Nodemailer (Email Notifications)
+
+---
+
+## 🚀 Getting Started
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/campusfix.git
+cd campusfix
 
 🛠️ Tech Stack
 🖥️ Frontend
