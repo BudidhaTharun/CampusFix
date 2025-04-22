@@ -48,6 +48,12 @@ npm run start
 
 ## 🔐 Login Instructions
 
+### Single Login Page
+- Use the single login page: [CampusFix Login](https://campusfix-budidha-tharuns-projects.vercel.app/)
+- Based on your credentials, you will be redirected to the respective portal:
+  - Service Staff Portal
+  - Student Portal
+
 ### 🧑‍🔧 Service Staff (Electrician)
 - **Email:** tharunnani3333@gmail.com  
 - **Password:** 123456
